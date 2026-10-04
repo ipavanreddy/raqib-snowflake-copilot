@@ -4,7 +4,7 @@ Use connection `raqib`. Follow AGENTS.md. Work through the steps in order. After
 and log what you did (and any error you fixed) under "Build" in coco/EVIDENCE.md.
 
 1. **Data.** Use skill `$synthetic-banking-data` to generate the data and build the policy PDFs
-   (`python data_gen/build_pdfs.py`).
+   (`.venv/bin/python data_gen/build_pdfs.py`).
 2. **Platform.** Run `sql/01_setup.sql`. If cross-region inference cannot be set, note it and continue.
 3. **Load.** PUT the CSVs to `@RAQIB.RAW.LANDING` and the PDFs to `@RAQIB.DOCS.POLICY_STAGE`, then run `sql/02_raw_tables.sql`
    and compare the row counts with data/generated/manifest.json.

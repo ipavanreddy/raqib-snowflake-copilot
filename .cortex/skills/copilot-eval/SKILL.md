@@ -22,8 +22,8 @@ SELECT RULE_ID, COUNT(*) FROM RAQIB.OPS.ALERT_QUEUE GROUP BY 1 ORDER BY 1;   -- 
 
 ## 2. Agent golden set
 ```bash
-python eval/run_eval.py --connection raqib     # live agent; also writes RAQIB.OPS.EVAL_RESULTS
-python eval/run_eval.py --offline              # offline replica
+.venv/bin/python eval/run_eval.py --connection raqib     # live agent; also writes RAQIB.OPS.EVAL_RESULTS
+.venv/bin/python eval/run_eval.py --offline              # offline replica
 ```
 Each case in `eval/golden_questions.yaml` has `must_contain` (alternatives separated by `|`) and `must_not_contain`.
 The set covers:

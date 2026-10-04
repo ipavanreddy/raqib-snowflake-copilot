@@ -9,8 +9,8 @@ cd "$ROOT"
 run() { echo "▶ $1"; snow sql -c "$CONN" -f "$1"; }
 
 echo "== 1. Synthetic data + policy PDFs"
-python data_gen/generate.py --out data/generated
-python data_gen/build_pdfs.py
+.venv/bin/python data_gen/generate.py --out data/generated
+.venv/bin/python data_gen/build_pdfs.py
 
 echo "== 2. Platform setup (ACCOUNTADMIN)"
 run sql/01_setup.sql
@@ -43,5 +43,5 @@ echo "== 8. Streamlit in Snowflake"
 snow sql -c "$CONN" -q "USE ROLE RAQIB_ADMIN; GRANT USAGE ON STREAMLIT RAQIB.APP.RAQIB_APP TO ROLE RAQIB_ANALYST"
 
 echo "== 9. Validate"
-python eval/run_eval.py --connection "$CONN" || true
+.venv/bin/python eval/run_eval.py --connection "$CONN" || true
 echo "✅ Raqib deployed. Open Snowsight → Projects → Streamlit → RAQIB_APP"
