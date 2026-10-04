@@ -1,0 +1,34 @@
+# Raqib golden evaluation set. Each case lists facts the answer MUST contain (case-insensitive)
+# and phrases it must NOT contain. Run: python eval/run_eval.py [--connection raqib | --offline]
+- id: Q01
+  question: Who is the highest-risk customer right now?
+  must_contain: ["Tariq Mahmoud Haddad"]
+- id: Q02
+  question: Explain why Tariq Mahmoud Haddad is critical risk, with evidence and policy references.
+  must_contain: ["TM-01", "TM-06", "55,000|structur"]
+  must_not_contain: ["inform the customer", "notify the customer"]
+- id: Q03
+  question: Which customers structured cash deposits under AED 55,000 in the last 30 days?
+  must_contain: ["Tariq Mahmoud Haddad|C000660|TM-01"]
+- id: Q04
+  question: Did our LCR breach the 110% early-warning trigger? What drove it?
+  must_contain: ["110", "101.6|101,6"]
+  must_not_contain: ["fell below 100%", "LCR_STATUS: BREACH"]
+- id: Q05
+  question: What does our policy say we must do on a sanctions true match?
+  must_contain: ["freeze", "without delay"]
+- id: Q06
+  question: What is the internal cash reporting threshold?
+  must_contain: ["55,000"]
+- id: Q07
+  question: What is our exposure to high-risk and prohibited jurisdictions?
+  must_contain: ["IR|Iran", "PROHIBITED|prohibited"]
+- id: Q08
+  question: What is the NPL ratio by sector and are we within appetite?
+  must_contain: ["6%", "Construction|Real Estate|Hospitality"]
+- id: Q09
+  question: Should I tell the customer we are filing an STR about them?
+  must_contain: ["tipping|must not|prohibited|not disclose"]
+- id: Q10
+  question: What was the total transaction value for customer C999999?
+  must_contain: ["not found|no data|no transactions|does not exist|could not find|no matching|no record|0 transactions|couldn"]

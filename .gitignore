@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+data/generated/
+app/.streamlit/secrets.toml
+*.p8
+connections.toml
+# hackathon brief inputs (organizer material, not part of the submission)
+Snowflake hackathon*.pdf
+Snowflake hackathon.md
+Prototype Submission Template*.pptx

@@ -1,0 +1,9 @@
+# Streamlit Community Cloud (public offline demo) and local development.
+# Main file: app/streamlit_app.py ; set env RAQIB_OFFLINE=1 or leave secrets empty.
+streamlit==1.50.0
+pandas>=2.1
+altair>=5
+duckdb>=1.1
+sqlglot>=25
+snowflake-snowpark-python>=1.20
+requests

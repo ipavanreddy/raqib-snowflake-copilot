@@ -1,0 +1,87 @@
+{
+  "run_at": "2026-10-04T13:40:44.580532",
+  "mode": "offline",
+  "score": 1.0,
+  "results": [
+    {
+      "id": "Q01",
+      "question": "Who is the highest-risk customer right now?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 0.0,
+      "answer_excerpt": "The 10 highest-risk customers are below. **Tariq Mahmoud Haddad** leads with a score of 100 (CRITICAL), hitting rules TM-04, TM-07, TM-06, TM-01. 10 of 10 are CRITICAL and must be reviewed today (TM Rulebook s.6). **Next step:** ask me to explain the top customer. _Offline demo mode: deterministic answer from the same verified queries, tools and policies. The live app uses the Snowflake Cortex Agent._ CUSTOMER_ID,FULL_NAME,RISK_SCORE,RISK_BAND,RULE_IDS,ALERTED_AMOUNT_AED C000660,Tariq Mahmoud Ha"
+    },
+    {
+      "id": "Q02",
+      "question": "Explain why Tariq Mahmoud Haddad is critical risk, with evidence and policy references.",
+      "passed": true,
+      "failures": [],
+      "latency_s": 0.0,
+      "answer_excerpt": "**Tariq Mahmoud Haddad (C000660)** is **CRITICAL** risk with a score of **100/100** (rules +70, multi typology +5, kyc +12, geography +5, kyc overdue +5, value +4). Profile: individual, Real Estate Broker, KYC rating HIGH, PEP False, KYC review overdue True. **Triggered rules** - **TM-06 Watchlist name match on counterparty** (CRITICAL): 1 payment(s), AED 93196, with \"Al-Noor Strategic Trading LLC\" (99% match to SYNTHETIC_SANCTIONS entry WL-0001 \"Al Noor Strategic Trading L.L.C\") - **TM-06 Watch"
+    },
+    {
+      "id": "Q03",
+      "question": "Which customers structured cash deposits under AED 55,000 in the last 30 days?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 0.0,
+      "answer_excerpt": "**8 customers** made 3+ cash deposits of AED 45,000\u201354,999 within 7 days (rule TM-01), totalling AED 1,906,326. Deposits just below the AED 55,000 internal threshold are a primary structuring indicator [POL-AML-001 s.7.2; POL-TM-002 s.4.1]. _Offline demo mode: deterministic answer from the same verified queries, tools and policies. The live app uses the Snowflake Cortex Agent._ CUSTOMER_ID,FULL_NAME,DEPOSITS,TOTAL_AED,WINDOW_START,WINDOW_END,TRIGGER_SUMMARY C000678,Mark Haddad,6,299370.21,2026-0"
+    },
+    {
+      "id": "Q04",
+      "question": "Did our LCR breach the 110% early-warning trigger? What drove it?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 0.0,
+      "answer_excerpt": "Latest LCR (2026-09-30) is **129.8%** \u2014 COMPLIANT. The LCR fell below the **110% early-warning trigger on 3 day(s)** (low 101.6% on 2026-09-16), driven by a drop in HQLA and higher non-operational wholesale outflows. It never breached the 100% regulatory minimum. Policy requires same-day ALCO notification and a remediation plan [POL-LIQ-005 s.4]. _Offline demo mode: deterministic answer from the same verified queries, tools and policies. The live app uses the Snowflake Cortex Agent._ AS_OF_DATE,"
+    },
+    {
+      "id": "Q05",
+      "question": "What does our policy say we must do on a sanctions true match?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 0.0,
+      "answer_excerpt": "From **Sanctions Screening Procedure** \u2014 *4. Name matching* [POL-SAN-003#004]: > ## 4. Name matching 4.1 Names are normalised before comparison: upper-case, punctuation replaced by spaces, repeated whitespace collapsed, and transliteration variants considered. 4.2 A potential match is raised when the Jaro-Winkler similarity is 90 or more, or when the first and last name tokens are identical (covering abbreviated or omitted middle names such as \"Viktor A. Morozkin\"). 4.3 **Disambiguation:** analy"
+    },
+    {
+      "id": "Q06",
+      "question": "What is the internal cash reporting threshold?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 0.0,
+      "answer_excerpt": "From **Anti-Money Laundering and Counter-Terrorist Financing Policy** \u2014 *7. Red flags and typologies* [POL-AML-001#007]: > ## 7. Red flags and typologies 7.1 Staff must be alert to activity that is inconsistent with the customer's known profile, has no apparent economic purpose, or appears designed to avoid reporting thresholds. 7.2 **Cash structuring.** The Bank applies an internal cash reporting threshold of **AED 55,000** per transaction. Breaking cash deposits into amounts just below this th"
+    },
+    {
+      "id": "Q07",
+      "question": "What is our exposure to high-risk and prohibited jurisdictions?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 0.0,
+      "answer_excerpt": "Exposure to HIGH/PROHIBITED jurisdictions totals **AED 25,395,017** across 53 payments. Payments to PROHIBITED-tier countries require MLRO approval [POL-SAN-003 s.5]. _Offline demo mode: deterministic answer from the same verified queries, tools and policies. The live app uses the Snowflake Cortex Agent._ COUNTERPARTY_COUNTRY,COUNTERPARTY_COUNTRY_RISK,PAYMENTS,TOTAL_AED,CUSTOMERS RU,HIGH,7,8437615.0,6 LB,HIGH,12,6607834.0,6 NG,HIGH,7,3450611.0,5 SY,HIGH,8,2541577.0,7 IR,PROHIBITED,9,2316222.0,5 "
+    },
+    {
+      "id": "Q08",
+      "question": "What is the NPL ratio by sector and are we within appetite?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 0.0,
+      "answer_excerpt": "Portfolio NPL ratio is **7.03%** against a risk appetite of < 6% [POL-CRD-006 s.3]. Highest sector NPL: **Construction** at 21.07%. _Offline demo mode: deterministic answer from the same verified queries, tools and policies. The live app uses the Snowflake Cortex Agent._ SECTOR,EXPOSURE_AED,NPL_RATIO_PCT,ECL_AED Construction,14541995.0,21.07,2147727.0 Retail,12875119.0,20.32,1609754.0 General Trading,17504963.0,12.22,1677124.0 Money Exchange,7577603.0,11.08,1842033.0 Healthcare,23904480.0,8.4,13"
+    },
+    {
+      "id": "Q09",
+      "question": "Should I tell the customer we are filing an STR about them?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 0.0,
+      "answer_excerpt": "From **Suspicious Transaction Report (STR) Filing Guide** \u2014 *2. Report structure* [POL-STR-008#002]: > ## 2. Report structure Every STR must contain the following sections: 1. **Reporting entity:** Gulf Horizon Bank, MLRO name, internal case reference. 2. **Report type and reason:** STR (suspicious transaction) or SAR (suspicious activity without a transaction), plus the primary indicator, for example structuring or a sanctions near-match. 3. **Subject(s):** full name, customer ID, ID document n"
+    },
+    {
+      "id": "Q10",
+      "question": "What was the total transaction value for customer C999999?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 0.0,
+      "answer_excerpt": "Customer **C999999** was not found in the data, so I can't report any figures for it. Check the ID in the alert queue or search by name. _Offline demo mode: deterministic answer from the same verified queries, tools and policies. The live app uses the Snowflake Cortex Agent._ "
+    }
+  ]
+}

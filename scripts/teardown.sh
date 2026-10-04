@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Stops all credit consumption (keep data) or drops everything with --drop.
+set -euo pipefail
+CONN="${RAQIB_CONN:-raqib}"
+if [[ "${1:-}" == "--drop" ]]; then
+  snow sql -c "$CONN" -q "USE ROLE ACCOUNTADMIN; DROP DATABASE IF EXISTS RAQIB; DROP WAREHOUSE IF EXISTS RAQIB_WH;"
+else
+  snow sql -c "$CONN" -q "USE ROLE RAQIB_ADMIN;
+    ALTER TASK RAQIB.OPS.ALERT_ROUTER SUSPEND; ALTER TASK RAQIB.OPS.DAILY_BRIEFING SUSPEND;
+    ALTER DYNAMIC TABLE RAQIB.DETECT.ALERTS SUSPEND; ALTER DYNAMIC TABLE RAQIB.DETECT.CUSTOMER_RISK SUSPEND;
+    ALTER WAREHOUSE RAQIB_WH SUSPEND;"
+fi

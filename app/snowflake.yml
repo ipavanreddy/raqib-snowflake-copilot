@@ -1,0 +1,19 @@
+definition_version: 2
+entities:
+  raqib_app:
+    type: streamlit
+    identifier:
+      name: RAQIB_APP
+      database: RAQIB
+      schema: APP
+    title: "Raqib — Risk, Fraud & Regulatory Copilot"
+    stage: STREAMLIT_STAGE
+    query_warehouse: RAQIB_WH
+    main_file: streamlit_app.py
+    pages_dir: pages/
+    artifacts:
+      - streamlit_app.py
+      - environment.yml
+      - pages/
+      - lib/
+      - .streamlit/config.toml

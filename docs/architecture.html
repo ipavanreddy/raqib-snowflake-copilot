@@ -1,0 +1,88 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Raqib architecture</title>
+<style>
+  :root{--navy:#0B3D5C;--teal:#0F766E;--ink:#0F172A;--mut:#475569;--line:#CBD5E1;--bg:#F7F8FA;--sf:#29B5E8}
+  *{box-sizing:border-box} body{margin:0;background:#fff;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:var(--ink)}
+  .wrap{width:1600px;height:900px;padding:26px 30px;position:relative}
+  h1{margin:0;font-size:26px;color:var(--navy)} .sub{color:var(--mut);font-size:14px;margin-top:2px}
+  .row{display:grid;grid-template-columns:200px 1fr 250px;gap:18px;margin-top:16px;height:760px}
+  .col{display:flex;flex-direction:column;gap:12px}
+  .lane{border:1.5px dashed var(--line);border-radius:14px;padding:12px;background:var(--bg)}
+  .lane h3{margin:0 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+  .box{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.45}
+  .box b{color:var(--navy);font-size:13px}
+  .sf{border:2px solid var(--sf);border-radius:16px;padding:12px;background:#F2FBFE;height:100%;display:grid;grid-template-rows:auto auto auto auto auto;align-content:space-evenly;gap:12px}
+  .sf>h2{margin:0;font-size:15px;color:#0E7490}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .tag{display:inline-block;font-size:10.5px;padding:1px 6px;border-radius:5px;background:#E0F2FE;color:#075985;margin:2px 2px 0 0}
+  .tag.t{background:#CCFBF1;color:#115E59}.tag.o{background:#FFEDD5;color:#9A3412}.tag.p{background:#EDE9FE;color:#5B21B6}
+  .agent{background:linear-gradient(135deg,#0B3D5C,#0F766E);color:#fff;border:none}
+  .agent b{color:#fff}
+  .coco{border:2px solid #7C3AED;border-radius:14px;padding:10px;background:#FAF5FF}
+  .coco h3{color:#6D28D9}
+  .arrow{font-size:20px;color:var(--teal);text-align:center;line-height:1}
+  .foot{position:absolute;bottom:14px;left:30px;right:30px;font-size:12px;color:var(--mut);display:flex;justify-content:space-between}
+</style></head>
+<body><div class="wrap">
+  <h1>Raqib — Risk, Fraud &amp; Regulatory Intelligence Copilot</h1>
+  <div class="sub">Signal → evidence → documented finding, fully inside Snowflake · built, run and tested with CoCo (Cortex Code)</div>
+  <div class="row">
+    <div class="col">
+      <div class="lane"><h3>Sources (synthetic)</h3>
+        <div class="box"><b>Core banking</b><br>customers · accounts · transactions · counterparties <span class="tag">CSV</span></div>
+        <div class="box" style="margin-top:8px"><b>Digital channel</b><br>logins · devices · resets · beneficiaries</div>
+        <div class="box" style="margin-top:8px"><b>Treasury &amp; credit</b><br>daily HQLA/outflows · loan book</div>
+        <div class="box" style="margin-top:8px"><b>Lists</b><br>watchlist · country risk</div>
+        <div class="box" style="margin-top:8px"><b>Policies &amp; regulation</b><br>8 PDFs: AML/CFT, TM rulebook, sanctions, CDD, LCR, IFRS 9, fraud, STR guide</div>
+        <div class="box" style="margin-top:8px"><b>Live feed</b><br>SIMULATE_ACTIVITY → RAW</div>
+      </div>
+      <div class="coco"><h3 style="margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.06em">CoCo · every phase</h3>
+        <div class="box">Plan → Build → Execute → Test prompts<br>5 skills · 3 subagents · eval</div>
+      </div>
+    </div>
+
+    <div class="sf"><h2>❄ Snowflake — database RAQIB (governed, single copy of data)</h2>
+      <div class="grid4">
+        <div class="box"><b>RAW</b><br>COPY INTO · CHANGE_TRACKING<span class="tag">stage</span></div>
+        <div class="box"><b>CORE</b> dynamic tables<br>TXN_ENRICHED · CUSTOMER_PROFILE<span class="tag">TARGET_LAG</span></div>
+        <div class="box"><b>DETECT</b><br>8 rules TM-01…07, FR-01 → ALERTS · explainable CUSTOMER_RISK<span class="tag">dynamic</span></div>
+        <div class="box"><b>RISK</b><br>Basel III LCR (caps, run-offs) · IFRS 9 ECL · AML–credit overlap</div>
+      </div>
+      <div class="grid4">
+        <div class="box"><b>DOCS</b><br>AI_PARSE_DOCUMENT → AI_EXTRACT metadata → chunks<span class="tag t">Cortex AI</span></div>
+        <div class="box"><b>Cortex Search</b><br>POLICY_SEARCH (hybrid) with chunk-level citations<span class="tag t">RAG</span></div>
+        <div class="box"><b>Semantic views</b> (ontology)<br>AML_SV · RISK_SV — synonyms, metrics, verified queries</div>
+        <div class="box"><b>OPS</b><br>cases · reports · audit · copilot log · outbox · eval results</div>
+      </div>
+      <div class="box agent" style="padding:14px 16px;font-size:13.5px"><b>Cortex Agent · RAQIB_COPILOT</b><br>
+        tools: aml_analyst · risk_analyst (Cortex Analyst) · policy_search (Cortex Search) ·
+        get_alert_evidence · get_customer_360 · update_alert_status · create_case · draft_str · generate_regulatory_report
+        <span class="tag p">Python SPs</span><br>
+        guardrails in code: amount reconciliation · citation check · tipping-off filter · model fallback → template · MLRO-only filing
+      </div>
+      <div class="grid3">
+        <div class="box"><b>Governance</b><br>RBAC: ADMIN / MLRO / ANALYST · tag-based PII masking · ground truth isolated</div>
+        <div class="box"><b>Automation</b><br>stream → ALERT_ROUTER task · 07:00 Dubai briefing + LCR tasks</div>
+        <div class="box"><b>Quality</b><br>27 pytest checks · golden eval 10 Qs · recall 100% on planted typologies</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="lane"><h3>Surfaces</h3>
+        <div class="box"><b>Streamlit in Snowflake</b><br>Command Center · Copilot · Investigate · Cases &amp; Reports · Regulatory Risk · Governance</div>
+        <div class="box" style="margin-top:8px"><b>Snowsight agent chat</b><br>same agent, same answers</div>
+        <div class="box" style="margin-top:8px"><b>CoCo CLI / Desktop</b><br>$aml-investigation · $copilot-eval</div>
+        <div class="box" style="margin-top:8px"><b>Public demo</b><br>offline DuckDB replica of the same SQL &amp; tools</div>
+      </div>
+      <div class="lane"><h3>Cross-tool action (MCP)</h3>
+        <div class="box"><b>Slack</b> #raqib-alerts<br>$alert-dispatch drains outbox</div>
+        <div class="box" style="margin-top:8px"><b>Jira</b> FCC project<br>CRITICAL alerts → issues</div>
+      </div>
+      <div class="lane"><h3>Personas</h3>
+        <div class="box">Analyst · MLRO · Treasury/Risk · Audit</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>All data synthetic · Gulf Horizon Bank is fictional</span><span>Snowflake: Dynamic Tables · Cortex AI · Cortex Search · Semantic Views · Cortex Agents · Streamlit · Tasks/Streams · Masking</span></div>
+</div></body></html>
