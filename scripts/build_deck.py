@@ -113,7 +113,7 @@ def remove_textboxes(slide, keep_pictures=True):
 
 # =====================================================================================
 def cover(s):
-    fills = {"Team Name :": "", "Team Leader Name :": "", "Team Size :": "",
+    fills = {"Team Name :": "Spontom", "Team Leader Name :": "Pavan Kumar Vinnakota", "Team Size :": "4",
              "Problem Statement :": "Problem 1 — Risk, Fraud and Regulatory Intelligence Copilot  ·  Raqib"}
     for shp in s.shapes:
         if shp.has_text_frame and shp.text_frame.text.strip() in fills:
