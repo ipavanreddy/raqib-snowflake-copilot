@@ -33,6 +33,8 @@ TABLE_RE = re.compile(r"CREATE OR REPLACE TABLE (?P<name>RAQIB\.[A-Z_.]+) \((?P<
 
 
 def to_duckdb(sql: str) -> str:
+    # Snowflake-only DT hint: DYNAMIC_TABLE_REFRESH_BOUNDARY(view) -> view
+    sql = re.sub(r"DYNAMIC_TABLE_REFRESH_BOUNDARY\(\s*([A-Za-z0-9_.]+)\s*\)", r"\1", sql)
     # Keep METRICS a uniform type across UNION ALL branches.
     sql = re.sub(r"OBJECT_CONSTRUCT\(", "TO_JSON(OBJECT_CONSTRUCT(", sql)
     sql = _close_object_construct(sql)

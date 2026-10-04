@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-10-04T13:40:44.580532",
+  "run_at": "2026-10-04T16:34:54.208493",
   "mode": "offline",
   "score": 1.0,
   "results": [
@@ -9,7 +9,7 @@
       "passed": true,
       "failures": [],
       "latency_s": 0.0,
-      "answer_excerpt": "The 10 highest-risk customers are below. **Tariq Mahmoud Haddad** leads with a score of 100 (CRITICAL), hitting rules TM-04, TM-07, TM-06, TM-01. 10 of 10 are CRITICAL and must be reviewed today (TM Rulebook s.6). **Next step:** ask me to explain the top customer. _Offline demo mode: deterministic answer from the same verified queries, tools and policies. The live app uses the Snowflake Cortex Agent._ CUSTOMER_ID,FULL_NAME,RISK_SCORE,RISK_BAND,RULE_IDS,ALERTED_AMOUNT_AED C000660,Tariq Mahmoud Ha"
+      "answer_excerpt": "The 10 highest-risk customers are below. **Tariq Mahmoud Haddad** leads with a score of 100 (CRITICAL), hitting rules TM-04, TM-07, TM-01, TM-06. 10 of 10 are CRITICAL and must be reviewed today (TM Rulebook s.6). **Next step:** ask me to explain the top customer. _Offline demo mode: deterministic answer from the same verified queries, tools and policies. The live app uses the Snowflake Cortex Agent._ CUSTOMER_ID,FULL_NAME,RISK_SCORE,RISK_BAND,RULE_IDS,ALERTED_AMOUNT_AED C000660,Tariq Mahmoud Ha"
     },
     {
       "id": "Q02",

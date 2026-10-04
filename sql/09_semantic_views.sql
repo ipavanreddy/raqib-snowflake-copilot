@@ -118,8 +118,7 @@ CREATE OR REPLACE SEMANTIC VIEW RAQIB.AI.RISK_SV
   )
   FACTS (
     lcr.lcr_pct_fact AS LCR_PCT,
-    loans.ead_fact AS EAD_AED,
-    loans.ecl_fact AS ECL_AED
+    loans.ead_fact AS EAD_AED
   )
   DIMENSIONS (
     lcr.as_of_date AS AS_OF_DATE WITH SYNONYMS ('date', 'reporting date'),
@@ -143,11 +142,10 @@ CREATE OR REPLACE SEMANTIC VIEW RAQIB.AI.RISK_SV
     loans.npl_exposure_aed AS SUM(IFF(loans.IS_NPL, loans.EAD_AED, 0)),
     loans.npl_ratio_pct AS 100 * SUM(IFF(loans.IS_NPL, loans.EAD_AED, 0)) / NULLIF(SUM(loans.EAD_AED), 0) WITH SYNONYMS ('NPL ratio'),
     loans.ecl_aed AS SUM(loans.ECL_AED) WITH SYNONYMS ('provisions', 'expected credit loss'),
-    loans.coverage_pct AS 100 * SUM(loans.ECL_AED) / NULLIF(SUM(loans.EAD_AED), 0),
     loans.loan_count AS COUNT(loans.LOAN_ID)
   )
   COMMENT = 'Raqib prudential risk ontology: Basel III LCR and IFRS 9 credit risk'
-  AI_SQL_GENERATION 'Liquidity amounts are AED millions; credit amounts are AED. Regulatory LCR minimum is 100% and the internal early-warning trigger is 110%. NPL appetite is below 6%. The latest reporting date is the max AS_OF_DATE.'
+  AI_SQL_GENERATION 'Liquidity amounts are AED millions; credit amounts are AED. Regulatory LCR minimum is 100% and the internal early-warning trigger is 110%. NPL appetite is below 6%. The latest reporting date is the max AS_OF_DATE. Coverage ratio = SUM(ECL_AED)/NULLIF(SUM(EAD_AED),0)*100.'
   AI_VERIFIED_QUERIES (
     lcr_latest AS (
       QUESTION 'What is our current LCR and are we compliant?'

@@ -78,28 +78,24 @@ def run(session, p_scenario):
 $$;
 
 -- -------------------------------------------------------------------------------------
--- Alert routing: new HIGH/CRITICAL alerts -> notification outbox (deduplicated)
+-- Alert routing: new HIGH/CRITICAL alerts -> notification outbox (poll-based)
+-- Streams are not supported on FULL-refresh dynamic tables, so we use a poll approach
+-- with NOT EXISTS to deduplicate.
 -- -------------------------------------------------------------------------------------
-CREATE OR REPLACE STREAM RAQIB.OPS.ALERTS_STREAM ON DYNAMIC TABLE RAQIB.DETECT.ALERTS
-  COMMENT = 'Change feed of alerts for routing';
-
 CREATE OR REPLACE TASK RAQIB.OPS.ALERT_ROUTER
   WAREHOUSE = RAQIB_WH
   SCHEDULE = '5 MINUTES'
-  COMMENT = 'Routes newly raised HIGH/CRITICAL alerts to the notification outbox'
-  WHEN SYSTEM$STREAM_HAS_DATA('RAQIB.OPS.ALERTS_STREAM')
 AS
 INSERT INTO RAQIB.OPS.NOTIFICATIONS (NOTIFICATION_ID, CREATED_AT, CHANNEL, SEVERITY, TITLE, BODY, OBJECT_ID, STATUS)
 SELECT
-    UUID_STRING(), CURRENT_TIMESTAMP(), 'slack', s.SEVERITY,
-    'New ' || s.SEVERITY || ' alert ' || s.ALERT_ID || ' (' || s.RULE_ID || ')',
-    r.FULL_NAME || ' (' || s.CUSTOMER_ID || ', risk ' || r.RISK_SCORE || ' ' || r.RISK_BAND || '): ' || s.TRIGGER_SUMMARY,
-    s.ALERT_ID, 'PENDING'
-FROM RAQIB.OPS.ALERTS_STREAM s
-JOIN RAQIB.DETECT.CUSTOMER_RISK r ON r.CUSTOMER_ID = s.CUSTOMER_ID
-WHERE s.METADATA$ACTION = 'INSERT'
-  AND s.SEVERITY IN ('HIGH', 'CRITICAL')
-  AND NOT EXISTS (SELECT 1 FROM RAQIB.OPS.NOTIFICATIONS n WHERE n.OBJECT_ID = s.ALERT_ID);
+    UUID_STRING(), CURRENT_TIMESTAMP(), 'slack', a.SEVERITY,
+    'New ' || a.SEVERITY || ' alert ' || a.ALERT_ID || ' (' || a.RULE_ID || ')',
+    r.FULL_NAME || ' (' || a.CUSTOMER_ID || ', risk ' || r.RISK_SCORE || ' ' || r.RISK_BAND || '): ' || a.TRIGGER_SUMMARY,
+    a.ALERT_ID, 'PENDING'
+FROM RAQIB.DETECT.ALERTS a
+JOIN RAQIB.DETECT.CUSTOMER_RISK r ON r.CUSTOMER_ID = a.CUSTOMER_ID
+WHERE a.SEVERITY IN ('HIGH', 'CRITICAL')
+  AND NOT EXISTS (SELECT 1 FROM RAQIB.OPS.NOTIFICATIONS n WHERE n.OBJECT_ID = a.ALERT_ID);
 
 -- Baseline: mark alerts that exist at deploy time as already notified, so only NEW ones page
 INSERT INTO RAQIB.OPS.NOTIFICATIONS (NOTIFICATION_ID, CREATED_AT, CHANNEL, SEVERITY, TITLE, BODY, OBJECT_ID, STATUS)
@@ -132,6 +128,46 @@ ALTER TASK RAQIB.OPS.ALERT_ROUTER RESUME;
 -- CALL RAQIB.OPS.SIMULATE_ACTIVITY('STRUCTURING');
 -- EXECUTE TASK RAQIB.OPS.ALERT_ROUTER;
 -- SELECT * FROM RAQIB.OPS.NOTIFICATIONS WHERE STATUS = 'PENDING' ORDER BY CREATED_AT DESC;
+
+-- -------------------------------------------------------------------------------------
+-- Pipeline health check (proposed in docs/coco_plan_review.md s.3.2)
+-- Shows each RAQIB dynamic table's last refresh time, state and lag.
+-- -------------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW RAQIB.OPS.PIPELINE_HEALTH
+  COMMENT = 'Freshness health check: last refresh time, state and lag for every RAQIB dynamic table'
+AS
+WITH latest AS (
+    SELECT
+        NAME,
+        SCHEMA_NAME,
+        QUALIFIED_NAME,
+        STATE,
+        STATE_MESSAGE,
+        REFRESH_START_TIME,
+        REFRESH_END_TIME,
+        DATEDIFF('second', REFRESH_END_TIME, CURRENT_TIMESTAMP()) AS SECONDS_SINCE_REFRESH,
+        STATE_CODE,
+        ROW_NUMBER() OVER (PARTITION BY QUALIFIED_NAME ORDER BY REFRESH_START_TIME DESC) AS RN
+    FROM TABLE(INFORMATION_SCHEMA.DYNAMIC_TABLE_REFRESH_HISTORY(NAME_PREFIX => 'RAQIB'))
+)
+SELECT
+    NAME,
+    SCHEMA_NAME,
+    QUALIFIED_NAME,
+    STATE,
+    STATE_MESSAGE,
+    REFRESH_START_TIME,
+    REFRESH_END_TIME,
+    SECONDS_SINCE_REFRESH,
+    CASE
+        WHEN STATE <> 'SUCCEEDED' THEN 'UNHEALTHY'
+        WHEN SECONDS_SINCE_REFRESH > 1800 THEN 'STALE'
+        ELSE 'HEALTHY'
+    END AS HEALTH_STATUS
+FROM latest
+WHERE RN = 1;
+
+GRANT SELECT ON VIEW RAQIB.OPS.PIPELINE_HEALTH TO ROLE RAQIB_ANALYST;
 
 -- Credit protection after the hackathon:
 -- ALTER TASK RAQIB.OPS.ALERT_ROUTER SUSPEND; ALTER TASK RAQIB.OPS.DAILY_BRIEFING SUSPEND;
