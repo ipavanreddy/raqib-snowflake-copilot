@@ -27,7 +27,7 @@ It is built, run and tested with **CoCo (Cortex Code)** across the whole lifecyc
 | Basel III LCR, IFRS 9 ECL, AML–credit overlap | Views | `sql/05` |
 | Policy intelligence (8 PDFs) | AI_PARSE_DOCUMENT, AI_EXTRACT, SPLIT_TEXT_RECURSIVE_CHARACTER, **Cortex Search** | `sql/06`, `policy_docs/` |
 | Agent tools with guardrails | Python stored procedures, AI_COMPLETE (guardrails, model fallback) | `tools/raqib_tools.py`, `sql/07` |
-| Governance | RBAC (Admin/MLRO/Analyst), tag-based masking, caller's-rights approval | `sql/08` |
+| Governance | RBAC (Admin/MLRO/Analyst), PII tags + secure-view masking (Standard edition), caller's-rights approval | `sql/08` |
 | Ontology | **Semantic views** with synonyms, metrics, verified queries | `sql/09` |
 | Copilot | **Cortex Agent** with 2 Analyst tools, Search and 6 custom tools | `sql/10` |
 | Automation | Stream + tasks (alert routing, 07:00 Dubai briefing), live-activity simulator | `sql/11` |

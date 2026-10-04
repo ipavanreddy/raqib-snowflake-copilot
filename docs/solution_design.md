@@ -73,7 +73,7 @@ non-planted customers, and the multi-typology hero case ranked CRITICAL in the t
 | Unauthorised filing | The agent has no filing tool; `APPROVE_REPORT` requires `RAQIB_MLRO` (caller's rights) |
 | Weak closures | A closure rationale of at least 25 characters is required |
 | Model outage | Primary model → fallback model → deterministic template |
-| PII exposure | Tag-based masking; analysts see masked IDs |
+| PII exposure | Secure view masks Emirates ID, phone, email and DOB unless the MLRO role is active |
 | Unknown entities | Explicit "not found"; never a guess (eval case Q10) |
 
 ## 8. Why Snowflake-native

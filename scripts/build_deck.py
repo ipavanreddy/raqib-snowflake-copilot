@@ -232,16 +232,21 @@ def coco_lifecycle(s):
         text(s, x + 0.12, 1.9, 1.95, 1.2, body, size=9.5)
         text(s, x + 0.12, 3.12, 1.95, 0.25, f, size=8.5, color=MUTED)
         x += 2.34
-    card(s, 0.4, 3.6, 9.2, 1.62, fill=WHITE, line=LINE, name="Ingenuity card")
-    text(s, 0.55, 3.66, 8.9, 0.28, "Ingenuity in CoCo usage", size=12, color=NAVY, bold=True)
-    text(s, 0.55, 3.96, 4.4, 1.25, [
-        [("5 reusable skills: ", {"bold": True}), ("synthetic-banking-data, aml-investigation, regulatory-report-drafter, copilot-eval, alert-dispatch", {})],
-        [("3 subagents: ", {"bold": True}), ("pipeline-engineer → fincrime-investigator → report-validator, with explicit HANDOFF and independent re-derivation", {})],
+    card(s, 0.4, 3.6, 4.5, 1.62, fill=WHITE, line=LINE, name="Fixes card")
+    text(s, 0.55, 3.66, 4.25, 0.28, "Real fixes CoCo made on the live account", size=11.5, color=NAVY, bold=True)
+    text(s, 0.55, 3.95, 4.25, 1.25, [
+        "• Dynamic table over views → wrapped in DYNAMIC_TABLE_REFRESH_BOUNDARY",
+        "• Semantic view metric rules → rewrote ECL / coverage metrics",
+        "• No streams on FULL-refresh tables → poll-based alert router",
+        "• Masking needs Enterprise → secure view with role check",
     ], size=9.5)
-    text(s, 5.1, 3.96, 4.4, 1.25, [
-        [("MCP: ", {"bold": True}), ("Slack and Jira turn Snowflake alerts into cross-tool action", {})],
-        [("Unattended: ", {"bold": True}), ("Snowflake tasks + scheduled `cortex exec` dispatch and briefing", {})],
-        [("Custom tools: ", {"bold": True}), ("6 Python stored procedures the agent calls to act, not just answer", {})],
+    card(s, 5.1, 3.6, 4.5, 1.62, fill=WHITE, line=LINE, name="Ingenuity card")
+    text(s, 5.25, 3.66, 4.25, 0.28, "Ingenuity in CoCo usage", size=11.5, color=NAVY, bold=True)
+    text(s, 5.25, 3.95, 4.25, 1.25, [
+        [("5 skills, ", {"bold": True}), ("3 subagents with HANDOFF + independent validation", {})],
+        [("Plan → build: ", {"bold": True}), ("CoCo's own review added the PIPELINE_HEALTH check", {})],
+        [("MCP + schedules: ", {"bold": True}), ("Slack / Jira dispatch, Snowflake tasks", {})],
+        [("6 custom tools: ", {"bold": True}), ("stored procedures the agent calls to act", {})],
     ], size=9.5)
 
 
@@ -253,7 +258,7 @@ def guardrails(s):
             ("Fake citations", "Cited chunk IDs must be among the retrieved policy passages"),
             ("Tipping-off", "Language filter + agent instructions; flagged text removed"),
             ("Unauthorised filing", "Agent has no filing tool; APPROVE_REPORT needs RAQIB_MLRO"),
-            ("PII exposure", "Tag-based masking; analysts see masked Emirates ID / phone / DOB"),
+            ("PII exposure", "Secure view masks Emirates ID / phone / email / DOB unless the MLRO role is active"),
             ("Model outage", "Primary → fallback model → deterministic template"),
             ("Unknown entities", "Explicit \"not found\" (tested), never a guess"),
             ("Oversight", "AUDIT_LOG + COPILOT_AUDIT + EVAL_RESULTS in Snowflake")]
@@ -279,12 +284,12 @@ def guardrails(s):
 def walkthrough(s):
     remove_textboxes(s)
     title(s, "Additional · Product walkthrough (Streamlit in Snowflake)")
-    left = crop_shot("deck_command_center.png", left=360, top=30, right=1380, bottom=860)
+    left = SHOTS / "live_command_center.png"  # captured from Streamlit in Snowflake (live Cortex)
     im = Image.open(left)
     h = 3.55
     w = h * im.width / im.height
     picture(s, left, 0.4, 1.2, w=w, h=h)
-    text(s, 0.4, 4.8, w, 0.4, "Command Center: priority queue, alerts by rule, LCR vs the 100% / 110% triggers", size=9.5, color=MUTED)
+    text(s, 0.4, 4.8, w, 0.4, "Live in Snowflake: Command Center reading the deployed pipeline (Live · Snowflake Cortex)", size=9.5, color=MUTED)
     rx, rw = 0.4 + w + 0.25, 9.6 - (0.4 + w + 0.25)
     y = 1.2
     for fname, box, cap in [("deck_copilot.png", (380, 395, 1380, 740), "Copilot: governed answer with rules, score breakdown and policy citations"),
@@ -295,6 +300,19 @@ def walkthrough(s):
         picture(s, img, rx, y, w=rw, h=hh)
         text(s, rx, y + hh + 0.02, rw, 0.3, cap, size=9.5, color=MUTED)
         y += hh + 0.42
+
+
+def links(s):
+    box = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.5), Inches(4.55), Inches(9.0), Inches(0.75))
+    box.fill.solid()
+    box.fill.fore_color.rgb = RGBColor(0x0B, 0x1E, 0x33)
+    box.line.fill.background()
+    text(s, 0.7, 4.6, 8.6, 0.65, [
+        [("GitHub  ", {"bold": True, "color": RGBColor(0x7D, 0xD3, 0xFC)}),
+         ("github.com/ipavanreddy/raqib-snowflake-copilot", {"color": WHITE})],
+        [("Live app  ", {"bold": True, "color": RGBColor(0x7D, 0xD3, 0xFC)}),
+         ("Streamlit in Snowflake · RAQIB.APP.RAQIB_APP (Snowsight login)", {"color": WHITE})],
+    ], size=11)
 
 
 def main():
@@ -312,6 +330,7 @@ def main():
     coco_lifecycle(sl[4])
     guardrails(sl[5])
     walkthrough(sl[6])
+    links(sl[7])
     prs.save(a.out)
     print("saved", a.out)
 
