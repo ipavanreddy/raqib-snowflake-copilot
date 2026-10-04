@@ -57,19 +57,19 @@ cd app && RAQIB_OFFLINE=1 ../.venv/bin/streamlit run streamlit_app.py
    curl -LsS https://ai.snowflake.com/static/cc-scripts/install.sh | sh
    uv tool install snowflake-cli
    ```
-3. **Connect:** create `~/.snowflake/connections.toml` (chmod 600):
+3. **Connect:** generate a key pair, register the public key with `ALTER USER <you> SET RSA_PUBLIC_KEY='...'`, then create `~/.snowflake/connections.toml` (chmod 600):
    ```toml
    [raqib]
    account = "<ORG-ACCOUNT>"
    user = "<USER>"
-   authenticator = "externalbrowser"
+   authenticator = "SNOWFLAKE_JWT"          # key-pair auth (trial accounts have no SSO)
+   private_key_file = "~/.snowflake/keys/raqib_rsa_key.p8"
    role = "ACCOUNTADMIN"
    warehouse = "COMPUTE_WH"
    ```
-4. **Build and run with CoCo:** follow [`coco/README.md`](coco/README.md), or run everything at once:
-   ```bash
-   cortex exec -c raqib --bypass "Run scripts/deploy.sh. If any step fails, fix the root cause in the repo file and re-run it. Log fixes in coco/EVIDENCE.md."
-   ```
+4. **Build and run with CoCo:** start `cortex -c raqib` in the repo root and follow [`coco/README.md`](coco/README.md)
+   phase by phase. Trial accounts must run CoCo interactively; headless `cortex exec` needs a paid account.
+   `scripts/deploy.sh` is the same sequence as a plain script, for reference.
 5. **Public demo:** deploy `app/streamlit_app.py` on Streamlit Community Cloud with env `RAQIB_OFFLINE=1`. It uses `requirements.txt` at the repo root.
 6. **Stop credit burn after judging:** `scripts/teardown.sh` (or `--drop`).
 

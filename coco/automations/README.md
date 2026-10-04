@@ -8,7 +8,8 @@ Two layers keep Raqib running without a human:
 - Dynamic tables refresh with a 5-minute target lag.
 
 **2. CoCo scheduled runs (cross-tool action through MCP)**
-Use the CoCo Desktop app's scheduled tasks / automations if your build has them. Otherwise schedule the CLI with launchd or cron:
+Use the CoCo Desktop app's scheduled tasks / automations (works on trial accounts). On accounts with headless
+mode enabled, you can instead schedule the CLI with launchd or cron:
 ```bash
 # every 15 minutes: drain the outbox to Slack/Jira
 */15 * * * * cd /path/to/raqib && ~/.local/bin/cortex exec -c raqib --file coco/automations/alert_dispatch.md --bypass --max-turns 20 >> logs/dispatch.log 2>&1
