@@ -31,7 +31,7 @@ Builds a privacy-safe dataset whose suspicious patterns are **known**, so you ca
 ## Steps
 1. Generate:
    ```bash
-   python data_gen/generate.py --out data/generated --seed 42 --individuals 1800 --corporates 350
+   .venv/bin/python data_gen/generate.py --out data/generated --seed 42 --individuals 1800 --corporates 350
    ```
    Scale up with larger `--individuals` / `--corporates` values; runtime is about linear.
 2. Inspect `data/generated/manifest.json` (row counts) and `planted_cases.csv` (ground truth).
