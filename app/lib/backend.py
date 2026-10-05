@@ -73,6 +73,25 @@ def parse_agent_events(events: list[dict]) -> dict:
     return out
 
 
+def parse_agent_response(resp: dict) -> dict:
+    """Map a non-streaming agent response ({"content": [...]}) onto the streaming event shape."""
+    events = []
+    for c in resp.get("content", []):
+        t = c.get("type")
+        if t == "text":
+            sep = "\n\n" if any(e["event"] == "response.text.delta" for e in events) else ""
+            events.append({"event": "response.text.delta", "data": {"text": sep + c.get("text", "")}})
+            for ann in c.get("annotations") or []:
+                events.append({"event": "response.text.annotation", "data": {"annotation": ann}})
+        elif t == "thinking":
+            events.append({"event": "response.thinking.delta", "data": {"text": (c.get("thinking") or {}).get("text", "")}})
+        elif t in ("tool_use", "tool_result", "table"):
+            events.append({"event": f"response.{t}", "data": c.get(t) or {}})
+    if resp.get("error") or resp.get("message") and not resp.get("content"):
+        events.append({"event": "error", "data": {"message": resp.get("message") or json.dumps(resp.get("error"))}})
+    return parse_agent_events(events)
+
+
 def parse_sse(text: str) -> list[dict]:
     events, cur = [], {}
     for line in text.splitlines():
@@ -116,7 +135,10 @@ class SnowflakeBackend:
     def agent(self, messages: list[dict]) -> dict:
         body = {"messages": messages, "stream": True}
         if self.in_sis:
-            import _snowflake  # available in the Streamlit-in-Snowflake warehouse runtime
+            try:
+                import _snowflake  # warehouse runtime only; absent in the SiS container runtime
+            except ModuleNotFoundError:
+                return self._agent_via_sql(messages)
             resp = _snowflake.send_snow_api_request("POST", AGENT_PATH, {}, {}, body, None, 180000)
             if resp["status"] >= 400:
                 return {"error": f"Agent API {resp['status']}: {str(resp.get('content'))[:300]}"}
@@ -134,6 +156,13 @@ class SnowflakeBackend:
         if r.status_code >= 400:
             return {"error": f"Agent API {r.status_code}: {r.text[:300]}"}
         return parse_agent_events(parse_sse(r.text))
+
+    def _agent_via_sql(self, messages: list[dict]) -> dict:
+        """Non-streaming agent call through SQL; works in every runtime with the active session."""
+        payload = json.dumps({"messages": messages, "stream": False})
+        r = self.session.sql("SELECT SNOWFLAKE.CORTEX.DATA_AGENT_RUN('RAQIB.AI.RAQIB_COPILOT', ?) AS R",
+                             params=[payload]).collect()
+        return parse_agent_response(json.loads(r[0]["R"]))
 
     def simulate(self, scenario: str) -> dict:
         return self.tool("SIMULATE_ACTIVITY", scenario)
