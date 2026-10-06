@@ -14,8 +14,8 @@ It is built, run and tested with **CoCo (Cortex Code)** across the whole lifecyc
 | | |
 |---|---|
 | 🎥 Demo video | _add link_ |
-| 🌐 Live app (Streamlit in Snowflake) | _add link_ |
-| 🌐 Public demo (no login, offline replica) | _add Streamlit Community Cloud link_ |
+| 🌐 Live app (Streamlit in Snowflake) | `RAQIB.APP.RAQIB_APP` (Snowsight login required) |
+| 🌐 Public demo (no login, offline replica) | https://raqib-copilot.streamlit.app |
 | 📑 Submission deck | `docs/Raqib_submission_deck.pptx` |
 
 ## What's inside
@@ -71,7 +71,7 @@ cd app && RAQIB_OFFLINE=1 ../.venv/bin/streamlit run streamlit_app.py
 4. **Build and run with CoCo:** start `cortex -c raqib` in the repo root and follow [`coco/README.md`](coco/README.md)
    phase by phase. Trial accounts must run CoCo interactively; headless `cortex exec` needs a paid account.
    `scripts/deploy.sh` is the same sequence as a plain script, for reference.
-5. **Public demo:** deploy `app/streamlit_app.py` on Streamlit Community Cloud with env `RAQIB_OFFLINE=1`. It uses `requirements.txt` at the repo root.
+5. **Public demo:** deploy the root `streamlit_app.py` on Streamlit Community Cloud with Python 3.11 and no secrets. It installs the root `requirements.txt` and runs on the offline DuckDB replica.
 6. **Stop credit burn after judging:** `scripts/teardown.sh` (or `--drop`).
 
 ## Repository map

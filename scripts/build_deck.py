@@ -304,16 +304,17 @@ def walkthrough(s):
 
 
 def links(s):
-    box = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.5), Inches(4.55), Inches(9.0), Inches(0.75))
+    box = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.5), Inches(4.62), Inches(9.0), Inches(0.92))
     box.fill.solid()
     box.fill.fore_color.rgb = RGBColor(0x0B, 0x1E, 0x33)
     box.line.fill.background()
-    text(s, 0.7, 4.6, 8.6, 0.65, [
-        [("GitHub  ", {"bold": True, "color": RGBColor(0x7D, 0xD3, 0xFC)}),
-         ("github.com/ipavanreddy/raqib-snowflake-copilot", {"color": WHITE})],
-        [("Live app  ", {"bold": True, "color": RGBColor(0x7D, 0xD3, 0xFC)}),
-         ("Streamlit in Snowflake · RAQIB.APP.RAQIB_APP (Snowsight login)", {"color": WHITE})],
-    ], size=11)
+    label = {"bold": True, "color": RGBColor(0x7D, 0xD3, 0xFC)}
+    text(s, 0.7, 4.66, 8.6, 0.84, [
+        [("Public demo  ", label), ("raqib-copilot.streamlit.app", {"color": WHITE}),
+         ("  (no login, offline replica)", {"color": RGBColor(0xCB, 0xD5, 0xE1)})],
+        [("GitHub  ", label), ("github.com/ipavanreddy/raqib-snowflake-copilot", {"color": WHITE})],
+        [("Live app  ", label), ("Streamlit in Snowflake · RAQIB.APP.RAQIB_APP (Snowsight login)", {"color": WHITE})],
+    ], size=10.5)
 
 
 def main():
