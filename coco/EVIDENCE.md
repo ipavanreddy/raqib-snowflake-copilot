@@ -42,6 +42,33 @@ List sessions with `cortex conversations`. Export or screenshot the key ones.
 ## Test
 | When | Check | Result | Screenshot |
 |---|---|---|---|
+| 2026-10-05 | T1 Detection quality | **PASS** — 100% recall: all 42 planted cases detected across all 8 rules. False positives per rule: TM-01 1, TM-07 1, all others 0. Max 1 non-planted alert per rule (target ≤12). | |
+| 2026-10-05 | T2 Ontology consistency | **PASS** — semantic-view metric `alerts.alert_count` by `alerts.rule_id` matches physical query on `RAQIB.OPS.ALERT_QUEUE` exactly for all 8 rules. | |
+| 2026-10-05 | T3a Governance (analyst masked) | **PASS** — `USE SECONDARY ROLES NONE; USE ROLE RAQIB_ANALYST` → EMIRATES_ID `**************54-9`, PHONE `*********5942`. | |
+| 2026-10-05 | T3b Governance (planted denied) | **PASS** — `SELECT * FROM RAQIB.RAW.PLANTED_CASES` → "does not exist or not authorized". | |
+| 2026-10-05 | T3c Governance (approve refused) | **PASS** — `CALL APPROVE_REPORT(...)` as RAQIB_ANALYST → "Unknown user-defined function". | |
+| 2026-10-05 | T3d Governance (MLRO clear) | **PASS** — `USE ROLE RAQIB_MLRO` → full PII `784-1964-9478454-9`, `+971584335942`. | |
+| 2026-10-05 | T3e Governance (MLRO files) | **PASS** — `APPROVE_AND_FILE` → status FILED, goAML ref GOAML-2026-TEST-001. | |
+| 2026-10-05 | T4a Short rationale | **PASS** — `UPDATE_ALERT_STATUS(..., 'ok')` → rejected: "rationale of at least 25 characters". | |
+| 2026-10-05 | T4b Tipping-off | **PASS** — agent refuses: "you must not tell the customer... tipping-off is prohibited". | |
+| 2026-10-05 | T4c Unknown customer | **PASS** — `GET_CUSTOMER_360('C999999')` → "Customer C999999 not found." | |
+| 2026-10-05 | T4d Model fallback | **PASS** — set LLM_MODEL to invalid, DRAFT_STR used `llama3.3-70b` (fallback), validation passed 8/8, confidence 1.0. Restored to `claude-sonnet-4-5`. | |
+| 2026-10-05 | T5 Golden eval (live) | **PASS** — `run_eval.py --connection raqib` → **100% (10/10)**, mode=live. | |
+| 2026-10-05 | T6 Local suite | **PASS** — `pytest tests -q` → **27 passed** in 5.84s. | |
+| 2026-10-05 | T7 Freshness | **PASS** — `SIMULATE_ACTIVITY('BACKGROUND')` inserted 40 txns, all 4 DTs refreshed SUCCEEDED, PIPELINE_HEALTH shows HEALTHY. | |
+
+### Scorecard
+
+| # | Test | Target | Result | Status |
+|---|---|---|---|---|
+| T1 | Detection recall | 100% planted detected | 42/42 (100%) | PASS |
+| T1 | False-positive cap | ≤12 per rule | max 1 | PASS |
+| T2 | Ontology consistency | SV metric = physical | 8/8 match | PASS |
+| T3 | RBAC enforcement | 5 checks | 5/5 | PASS |
+| T4 | Guardrails | 4 checks | 4/4 | PASS |
+| T5 | Golden eval (live) | ≥90% | 100% (10/10) | PASS |
+| T6 | Local pytest suite | all green | 27/27 | PASS |
+| T7 | DT freshness | refreshes after insert | all HEALTHY | PASS |
 
 ## Skills, MCP, automations, multi-agent
 | Capability | How it was used | Evidence |
