@@ -21,7 +21,7 @@ CSS = """
   .rq-sub {color:#475569; font-size:0.9rem;}
   .rq-card {background:#fff; border:1px solid #E2E8F0; border-radius:12px; padding:14px 16px; min-height:112px;}
   .rq-kpi-label {color:#64748B; font-size:0.78rem; text-transform:uppercase; letter-spacing:.04em;}
-  .rq-kpi-value {color:#0F172A; font-size:1.4rem; font-weight:700; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .rq-kpi-value {color:#0F172A; font-size:clamp(1.05rem, 1.6vw, 1.4rem); font-weight:700; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .rq-kpi-note {font-size:0.8rem; margin-top:2px;}
   .rq-badge {display:inline-block; padding:2px 8px; border-radius:999px; font-size:0.74rem; font-weight:600; color:#fff;}
   .rq-pill {display:inline-block; padding:2px 8px; border-radius:6px; font-size:0.75rem; background:#EEF2F6; color:#334155; margin-right:4px;}

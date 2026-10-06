@@ -36,11 +36,12 @@ It is built, run and tested with **CoCo (Cortex Code)** across the whole lifecyc
 | Quality | 27 pytest checks, 10-question golden eval, recall/FP back-test | `tests/`, `eval/` |
 
 ## Results on the synthetic bank
-- **100% recall** on 42 planted scenarios across all 8 rules. False positives are capped at 12 alerts per rule.
+- **100% recall** on 42 planted scenarios across all 8 rules. Live false positives: at most 1 alert per rule on non-planted customers (target ≤12).
 - The hero case (*Tariq Mahmoud Haddad*: structuring + Iran/Lebanon wires + sanctions near-match + profile deviation) is ranked **CRITICAL (100/100)**.
 - An LCR stress episode is detected: **3 days below the 110% early-warning trigger** (trough 101.6%), with no breach of the 100% minimum.
 - STR guardrails are tested against a deliberately hallucinating LLM. Invented amounts, fake citations and tipping-off advice are all caught and blocked from filing.
-- Golden eval: **10/10 offline**. Re-run it live with `eval/run_eval.py --connection raqib`.
+- Golden eval: **10/10 live** against the Cortex Agent (and 10/10 offline).
+- CoCo test phase on the live account: **8/8 checks pass**. These cover recall, ontology consistency, RBAC and masking (5/5), guardrails (4/4), golden eval, pytest and dynamic-table freshness. See [coco/EVIDENCE.md](coco/EVIDENCE.md).
 
 ## Quick start (no Snowflake needed)
 ```bash

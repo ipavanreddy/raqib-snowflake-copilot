@@ -23,7 +23,7 @@ SELECT
 c = st.columns(6)
 kpi(c[0], "Open alerts", f"{int(k.OPEN_ALERTS):,}", f"{int(k.CRITICAL_ALERTS)} critical untriaged", SEVERITY_COLORS["CRITICAL"])
 kpi(c[1], "Critical customers", int(k.CRITICAL_CUSTOMERS), "same-day review (TM s.6)", SEVERITY_COLORS["CRITICAL"])
-kpi(c[2], "Value under alert", aed(k.ALERTED_AED), "review period")
+kpi(c[2], "Value under alert", aed(k.ALERTED_AED).replace("AED ", ""), "AED · review period")
 kpi(c[3], "Open cases", int(k.OPEN_CASES), "incl. pending MLRO")
 lcr_color = "#2F855A" if k.LCR >= 110 else ("#B7791F" if k.LCR >= 100 else "#B42318")
 kpi(c[4], "LCR (latest)", f"{k.LCR:.1f}%", f"low {k.LCR_MIN:.1f}% · trigger 110%", lcr_color)
@@ -34,16 +34,17 @@ left, right = st.columns([1.35, 1])
 
 with left:
     st.markdown('<div class="rq-section">Priority queue — highest-risk customers</div>', unsafe_allow_html=True)
-    top = q("""SELECT CUSTOMER_ID, FULL_NAME, RISK_SCORE, RISK_BAND, RULE_IDS, ALERT_COUNT, ALERTED_AMOUNT_AED
+    top = q("""SELECT FULL_NAME, RISK_SCORE, RULE_IDS, ALERT_COUNT, ALERTED_AMOUNT_AED
                FROM RAQIB.DETECT.CUSTOMER_RISK WHERE RULES_HIT > 0
                ORDER BY RISK_SCORE DESC, ALERTED_AMOUNT_AED DESC LIMIT 12""")
     st.dataframe(
         top, hide_index=True, use_container_width=True, height=420,
         column_config={
-            "RISK_SCORE": st.column_config.ProgressColumn("Risk score", min_value=0, max_value=100, format="%d"),
-            "ALERTED_AMOUNT_AED": st.column_config.NumberColumn("Alerted (AED)", format="%.0f"),
-            "FULL_NAME": "Customer", "CUSTOMER_ID": "ID", "CUSTOMER_TYPE": "Type", "RISK_BAND": "Band",
-            "RULE_IDS": "Rules hit", "ALERT_COUNT": "Alerts",
+            "FULL_NAME": st.column_config.TextColumn("Customer", width=190),
+            "RISK_SCORE": st.column_config.ProgressColumn("Risk", min_value=0, max_value=100, format="%d", width=78),
+            "RULE_IDS": st.column_config.TextColumn("Rules hit", width=177),
+            "ALERT_COUNT": st.column_config.NumberColumn("Alerts", width=55),
+            "ALERTED_AMOUNT_AED": st.column_config.NumberColumn("Alerted (AED)", format="compact", width=90),
         })
     st.caption("Open **Investigate** to see evidence, or ask the **Copilot**: “Explain why the top customer is critical.”")
 

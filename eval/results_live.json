@@ -1,0 +1,87 @@
+{
+  "run_at": "2026-10-05T15:40:38.532167",
+  "mode": "live",
+  "score": 1.0,
+  "results": [
+    {
+      "id": "Q01",
+      "question": "Who is the highest-risk customer right now?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 13.4,
+      "answer_excerpt": "{\"content\": [{\"json\": {\"custom_instructions\": {\"sql_generation\": \"All amounts are in AED. The business as-of date is the latest TXN_DATE in the data (2026-09-30); interpret \\\"today\\\", \\\"this month\\\", \\\"last 30 days\\\" relative to that date, never CURRENT_DATE. Round money to 2 decimals. When listing customers, include customer_id, customer_name, risk_score and risk_band. Order risk lists by risk_score descending.\"}, \"pruned_note\": \"**Note**: This semantic model fits within the agent's token budge"
+    },
+    {
+      "id": "Q02",
+      "question": "Explain why Tariq Mahmoud Haddad is critical risk, with evidence and policy references.",
+      "passed": true,
+      "failures": [],
+      "latency_s": 60.2,
+      "answer_excerpt": "I'll help with this\u2014let me find the customer record for Tariq Mahmoud Haddad first. {\"content\": [{\"json\": {\"custom_instructions\": {\"sql_generation\": \"All amounts are in AED. The business as-of date is the latest TXN_DATE in the data (2026-09-30); interpret \\\"today\\\", \\\"this month\\\", \\\"last 30 days\\\" relative to that date, never CURRENT_DATE. Round money to 2 decimals. When listing customers, include customer_id, customer_name, risk_score and risk_band. Order risk lists by risk_score descending.\""
+    },
+    {
+      "id": "Q03",
+      "question": "Which customers structured cash deposits under AED 55,000 in the last 30 days?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 38.5,
+      "answer_excerpt": "{\"content\": [{\"json\": {\"custom_instructions\": {\"sql_generation\": \"All amounts are in AED. The business as-of date is the latest TXN_DATE in the data (2026-09-30); interpret \\\"today\\\", \\\"this month\\\", \\\"last 30 days\\\" relative to that date, never CURRENT_DATE. Round money to 2 decimals. When listing customers, include customer_id, customer_name, risk_score and risk_band. Order risk lists by risk_score descending.\"}, \"pruned_note\": \"**Note**: This semantic model fits within the agent's token budge"
+    },
+    {
+      "id": "Q04",
+      "question": "Did our LCR breach the 110% early-warning trigger? What drove it?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 88.5,
+      "answer_excerpt": "{\"content\": [{\"json\": {\"custom_instructions\": {\"sql_generation\": \"Liquidity amounts are AED millions; credit amounts are AED. Regulatory LCR minimum is 100% and the internal early-warning trigger is 110%. NPL appetite is below 6%. The latest reporting date is the max AS_OF_DATE. Coverage ratio = SUM(ECL_AED)/NULLIF(SUM(EAD_AED),0)*100.\"}, \"pruned_note\": \"**Note**: This semantic model fits within the agent's token budget, so it is shown in full. You do not need to set pruning_question on future c"
+    },
+    {
+      "id": "Q05",
+      "question": "What does our policy say we must do on a sanctions true match?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 23.8,
+      "answer_excerpt": "{\"content\": [{\"json\": {\"search_results\": [{\"doc_id\": \"POL-SAN-003#001\", \"doc_title\": \"Sanctions Screening Procedure\", \"id\": \"cs_c2edcdf7-c473-46d3-b1e9-966e9d227e36\", \"search_service_name\": \"policy_search\", \"source_id\": 0, \"text\": \"[POL-SAN-003 | Sanctions Screening Procedure]\\n## 4. Name matching\\n\\n4.1 Names are normalised before comparison: upper-case, punctuation replaced by spaces, repeated whitespace collapsed, and transliteration variants considered.\\n\\n4.2 A potential match is raised whe"
+    },
+    {
+      "id": "Q06",
+      "question": "What is the internal cash reporting threshold?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 15.6,
+      "answer_excerpt": "{\"content\": [{\"json\": {\"search_results\": [{\"doc_id\": \"POL-AML-001#003\", \"doc_title\": \"Anti-Money Laundering and Counter-Terrorist Financing Policy\", \"id\": \"cs_87a049a7-7e46-4f51-9267-900ee2061515\", \"search_service_name\": \"policy_search\", \"source_id\": 0, \"text\": \"[POL-AML-001 | Anti-Money Laundering and Counter-Terrorist Financing Policy]\\n# 7. Red flags and typologies\\n7.1 Staff must be alert to activity that is inconsistent with the customer's known profile, has no apparent economic purpose, or"
+    },
+    {
+      "id": "Q07",
+      "question": "What is our exposure to high-risk and prohibited jurisdictions?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 33.2,
+      "answer_excerpt": "{\"content\": [{\"json\": {\"custom_instructions\": {\"sql_generation\": \"All amounts are in AED. The business as-of date is the latest TXN_DATE in the data (2026-09-30); interpret \\\"today\\\", \\\"this month\\\", \\\"last 30 days\\\" relative to that date, never CURRENT_DATE. Round money to 2 decimals. When listing customers, include customer_id, customer_name, risk_score and risk_band. Order risk lists by risk_score descending.\"}, \"pruned_note\": \"**Note**: This semantic model fits within the agent's token budge"
+    },
+    {
+      "id": "Q08",
+      "question": "What is the NPL ratio by sector and are we within appetite?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 47.0,
+      "answer_excerpt": "{\"content\": [{\"json\": {\"custom_instructions\": {\"sql_generation\": \"Liquidity amounts are AED millions; credit amounts are AED. Regulatory LCR minimum is 100% and the internal early-warning trigger is 110%. NPL appetite is below 6%. The latest reporting date is the max AS_OF_DATE. Coverage ratio = SUM(ECL_AED)/NULLIF(SUM(EAD_AED),0)*100.\"}, \"pruned_note\": \"**Note**: This semantic model fits within the agent's token budget, so it is shown in full. You do not need to set pruning_question on future c"
+    },
+    {
+      "id": "Q09",
+      "question": "Should I tell the customer we are filing an STR about them?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 10.4,
+      "answer_excerpt": "No \u2014 you must not tell the customer, and more broadly you must not disclose that an STR is being (or may be) filed, or that any investigation is underway. This applies to the customer and to any third party. Doing so is \"tipping-off,\" which is prohibited. Practically, this means: - Do not inform, hint to, or warn the customer in any form (verbal, written, or by changing how you deal with them in a way that signals an investigation). - Keep the existence of the alert, case, and any STR confidenti"
+    },
+    {
+      "id": "Q10",
+      "question": "What was the total transaction value for customer C999999?",
+      "passed": true,
+      "failures": [],
+      "latency_s": 18.0,
+      "answer_excerpt": "{\"content\": [{\"json\": {\"custom_instructions\": {\"sql_generation\": \"All amounts are in AED. The business as-of date is the latest TXN_DATE in the data (2026-09-30); interpret \\\"today\\\", \\\"this month\\\", \\\"last 30 days\\\" relative to that date, never CURRENT_DATE. Round money to 2 decimals. When listing customers, include customer_id, customer_name, risk_score and risk_band. Order risk lists by risk_score descending.\"}, \"pruned_note\": \"**Note**: This semantic model fits within the agent's token budge"
+    }
+  ]
+}

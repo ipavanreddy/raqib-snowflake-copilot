@@ -186,10 +186,10 @@ def architecture(s):
 
 def impact(s):
     title(s, "3 · Impact: measured on the synthetic bank, built to scale",
-          "Measured = from the repo's automated tests and eval. Business outcomes are estimates to validate in a pilot.")
+          "Measured = CoCo test phase on the live Snowflake account (coco/EVIDENCE.md). Business outcomes are estimates for a pilot.")
     stats = [("100%", "recall on 42 planted\ntypology scenarios (8 rules)"),
-             ("≤ 12", "false-positive alerts per\nrule on 2,150 customers"),
-             ("10 / 10", "golden copilot questions\npassed (incl. guardrails)"),
+             ("≤ 1", "false-positive alert per\nrule on 2,150 customers"),
+             ("10 / 10", "golden questions passed by\nthe live Cortex Agent"),
              ("3 / 3", "hallucination, tipping-off and\nunauthorised filing blocked")]
     x = 0.4
     for big, label in stats:
@@ -221,9 +221,9 @@ def coco_lifecycle(s):
                "coco/01_plan.md"),
               ("BUILD", "Generate and load data, then build dynamic tables, 8 rules, PDF → Cortex Search, tools, semantic views, agent and app, fixing errors in the repo",
                "coco/02_build.md"),
-              ("EXECUTE", "Inject live activity → new alert → case → STR → Slack/Jira via MCP; schedule tasks and CoCo runs",
+              ("EXECUTE", "Inject live structuring → 2 alerts + notification → skill-led investigation → case → STR (28/28 amounts reconciled) → LCR report",
                "coco/03_execute.md"),
-              ("TEST", "Recall and false-positive back-test, ontology consistency, masking / RBAC, guardrail and edge cases, golden eval",
+              ("TEST", "8/8 checks PASS live: 42/42 recall, ≤1 FP per rule, ontology 8/8, RBAC 5/5, guardrails 4/4, golden eval 10/10",
                "coco/04_test.md")]
     x = 0.4
     for name, body, f in phases:
@@ -239,13 +239,14 @@ def coco_lifecycle(s):
         "• Semantic view metric rules → rewrote ECL / coverage metrics",
         "• No streams on FULL-refresh tables → poll-based alert router",
         "• Masking needs Enterprise → secure view with role check",
+        "• No _snowflake in container runtime → agent via DATA_AGENT_RUN",
     ], size=9.5)
     card(s, 5.1, 3.6, 4.5, 1.62, fill=WHITE, line=LINE, name="Ingenuity card")
     text(s, 5.25, 3.66, 4.25, 0.28, "Ingenuity in CoCo usage", size=11.5, color=NAVY, bold=True)
     text(s, 5.25, 3.95, 4.25, 1.25, [
         [("5 skills, ", {"bold": True}), ("3 subagents with HANDOFF + independent validation", {})],
         [("Plan → build: ", {"bold": True}), ("CoCo's own review added the PIPELINE_HEALTH check", {})],
-        [("MCP + schedules: ", {"bold": True}), ("Slack / Jira dispatch, Snowflake tasks", {})],
+        [("Schedules + MCP: ", {"bold": True}), ("3 live Snowflake tasks; Slack / Jira dispatch skill", {})],
         [("6 custom tools: ", {"bold": True}), ("stored procedures the agent calls to act", {})],
     ], size=9.5)
 
